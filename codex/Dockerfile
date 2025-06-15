@@ -206,4 +206,17 @@ RUN chmod +x /opt/codex/setup_universal.sh
 COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod +x /opt/entrypoint.sh
 
+# --- Add codex user and set permissions ---
+RUN useradd -m -s /bin/bash codex \
+    && chown -R codex:codex /opt/codex /opt/entrypoint.sh
+
+# Install @openai/codex globally with npm (using Node.js 22)
+USER root
+RUN . /root/.nvm/nvm.sh && nvm use 22 && npm install -g @openai/codex
+
+WORKDIR /root
+
+RUN echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.bashrc \
+    && echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
 ENTRYPOINT  ["/opt/entrypoint.sh"]
