@@ -6,3 +6,7 @@ Docker version 28.1.1, build 4eba377
 
 /home/sakuragi/proj/acp-use/venv/bin/python
 
+# codex
+
+/home/sakuragi/proj/acp-use/codex   
+

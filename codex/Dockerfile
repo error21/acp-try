@@ -1,3 +1,5 @@
+FROM debian:bookworm
+
 ### BASE ###
 RUN apt-get update \
     && apt-get upgrade -y \
@@ -23,7 +25,7 @@ RUN apt-get update \
         libdb-dev \
         libedit2 \
         libffi-dev \
-        libgcc-13-dev \
+        libgcc-12-dev \
         libgcc1 \
         libgdbm-compat-dev \
         libgdbm-dev \
@@ -39,7 +41,7 @@ RUN apt-get update \
         libreadline-dev \
         libsqlite3-dev \
         libssl-dev \
-        libstdc++-13-dev \
+        libstdc++-12-dev \
         libunwind8 \
         libuuid1 \
         libxml2-dev \
@@ -55,7 +57,7 @@ RUN apt-get update \
         rsync \
         software-properties-common \
         sqlite3 \
-        swig3.0 \
+        swig \
         tk-dev \
         tzdata \
         unixodbc-dev \
@@ -85,7 +87,8 @@ ENV PIPX_BIN_DIR=/root/.local/bin
 ENV PATH=$PIPX_BIN_DIR:$PATH
 RUN apt-get update && apt-get install -y pipx \
     && rm -rf /var/lib/apt/lists/* \
-    && pipx install poetry uv \
+    && pipx install poetry \
+    && pipx install uv \
     # Preinstall common packages for each version
     && for pyv in $(ls ${PYENV_ROOT}/versions/); do \
         ${PYENV_ROOT}/versions/$pyv/bin/pip install --upgrade pip ruff black mypy pyright isort; \
@@ -127,7 +130,7 @@ RUN mkdir -p "$BUN_INSTALL/bin" \
     && echo 'export PATH="$BUN_INSTALL/bin:$PATH"' >> /etc/profile
 
 ### JAVA ###
-ARG JAVA_VERSION=21
+ARG JAVA_VERSION=17
 ARG GRADLE_VERSION=8.14
 ARG GRADLE_DOWNLOAD_SHA256=61ad310d3c7d3e5da131b76bbf22b5a4c0786e9d892dae8c1658d4b484de3caa
 ENV GRADLE_HOME=/opt/gradle
